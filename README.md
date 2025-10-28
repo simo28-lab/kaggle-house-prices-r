@@ -31,9 +31,9 @@ Ordinal Conversion: Categorical quality features (e.g., ExterQual, KitchenQual) 
 ### 3. Missing Data Imputation Strategy
 A semantic approach was adopted to handle missing values based on their meaning in the real estate domain:
 
-**Semantic Imputation**: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
+**Semantic Imputation**: **$\mathbf{NA}$** were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
 
-**Structural Imputation**: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
+**Structural Imputation**: **$\mathbf{NA}$** in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
 
 **Statistical Imputation**: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
 
