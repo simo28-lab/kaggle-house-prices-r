@@ -1,230 +1,178 @@
-# House Prices: Advanced Regression Techniques
+# House Prices: Advanced Regression Techniques (Kaggle)
+This project presents a robust and highly competitive solution for the classic Kaggle Regression Challenge, "House Prices: Advanced Regression Techniques." It applies a disciplined feature-driven pipeline and sophisticated ensemble modeling to accurately predict residential property sale prices. The primary goal is to achieve minimal root mean squared error (RMSE) on the target variable.
 
-This project predicts residential property sale prices using R and modern machine learning regression techniques.
-It applies statistical preprocessing, feature engineering, and ensemble modeling to achieve competitive performance in the Kaggle competition “House Prices: Advanced Regression Techniques.”
+## Key Highlights: A Modern ML Pipeline
+The solution leverages modern machine learning techniques, including Lasso Feature Selection, Ordinal Encoding, and Weighted Blending of heterogeneous models (XGBoost, Random Forest, ElasticNet).
 
-# Key Highlights
-## 1. Data Cleaning & Outlier Removal
+### 1. Data Cleaning & Outlier Management
+This stage ensures the integrity and stability of the regression models.
 
-Removed extreme outliers (GrLivArea > 4600)
+Outlier Removal: Extreme, high-leverage outliers (specifically GrLivArea>4600) were removed to prevent distortion of the predictive surface.
 
-Combined training and test sets for consistent preprocessing
+Data Consolidation: Training and test sets were combined for consistent and unified preprocessing.
 
-Log-transformed SalePrice to normalize its distribution
+Target Normalization: The dependent variable was log-transformed (SalePrice→log(SalePrice)) to stabilize variance and normalize the error distribution.
 
-## 2. Feature Engineering
+### 2. Feature Engineering: Domain Expertise
+New features were created based on domain knowledge to maximize predictive power:
 
-Created domain-informed features:
+TotalSF=GrLivArea+TotalBsmtSF (Total livable square footage)
 
-TotalSF = GrLivArea + TotalBsmtSF
+HouseAge=YrSold−YearBuilt
 
-HouseAge = YrSold - YearBuilt
+YearsSinceRemodel=YrSold−YearRemodAdd
 
-YearsSinceRemodel = YrSold - YearRemodAdd
+OverallScore=OverallQual×OverallCond
 
-OverallScore = OverallQual * OverallCond
+TotalBath=BsmtFullBath+(BsmtHalfBath×0.5)+FullBath+(HalfBath×0.5)
 
-TotalBath = BsmtFullBath + (BsmtHalfBath*0.5) + FullBath + (HalfBath*0.5)
-Converted ordinal quality features (e.g., ExterQual, KitchenQual) to numeric scales (0–5).
+Ordinal Conversion: Categorical quality features (e.g., ExterQual, KitchenQual) were converted to an interpretable numeric scale (0 to 5).
 
-## 3. Missing Data Imputation
+### 3. Missing Data Imputation Strategy
+A semantic approach was adopted to handle missing values based on their meaning in the real estate domain:
 
-Semantic: “None” for absent features (e.g., no garage, no pool)
+Semantic Imputation: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
 
-Structural: 0 for missing numeric areas (no basement)
+Structural Imputation: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
 
-Statistical: Median/mode imputation for remaining NAs
+Statistical Imputation: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
 
-## 4. Feature Transformation & Encoding
+### 4. Feature Transformation & Scaling
+Skewness Correction: log 
+1p
+​
+  transformation was applied to highly skewed numeric predictors (skewness>0.7).
 
-Applied log1p() to skewed numeric predictors (skewness > 0.7)
+Feature Filtering: Near-zero variance features were removed, and highly correlated variables (r>0.95) were pruned.
 
-Removed near-zero variance and highly correlated variables (r > 0.95)
+Encoding: Categorical variables were processed using One-Hot Encoding.
 
-One-hot encoded categorical variables
+Scaling: All final numeric predictors were centered and scaled (mean =0, sd =1) to ensure balanced model gradients.
 
-Centered and scaled all predictors
+### 5. Modeling and Ensemble Strategy
+Three high-performance models were trained using 10-fold cross-validation for reliable performance estimation:
 
-## 5. Modeling and Ensemble Strategy
+XGBoost: Excellent for non-linear feature interactions.
 
-Trained 3 models with 10-fold cross-validation:
+Random Forest (Ranger): Provides stability and low variance.
 
-GLMNet (ElasticNet)
-
-Random Forest (Ranger)
-
-XGBoost
+GLMNet (ElasticNet): Combines interpretability with effective regularization.
 
 Weighted Blending:
+The final prediction is an Ensemble Weighted Blend designed to capitalize on the strengths of each model:
 
-FinalPred_log = 0.50*XGBoost + 0.30*RandomForest + 0.20*GLMNet
-SalePrice = exp(FinalPred_log)
+FinalPred 
+log
+​
+ =0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet
+The final SalePrice is obtained by back-transforming: SalePrice=exp(FinalPred 
+log
+​
+ ).
 
-## 6. Performance
-Model	CV RMSE
-XGBoost	~0.127
-Random Forest	~0.134
-GLMNet	~0.130
-Blend	0.1267
-7. Output
+### 6. Performance Metrics
+The blend successfully improves generalization, achieving a lower RMSE than any single base learner.
 
-File: submission_blended.csv
+Model	Cross-Validation RMSE (log(SalePrice))
+Blend (Ensemble)	0.1267
+XGBoost	∼0.127
+GLMNet	∼0.130
+Random Forest	∼0.134
 
-Columns: Id, SalePrice
 
-# Theoretical Appendix
-## 1. Feature Engineering
+### 7. Output
+The final submission file: submission_blended.csv, containing columns Id and SalePrice.
 
-Concept: Domain-informed data representation.
-Example: TotalSF = GrLivArea + TotalBsmtSF
+## Theoretical Appendix: Key Concepts
+### 1. Feature Engineering
+Concept: The process of using domain knowledge to create predictive features from raw data, enhancing the model's understanding of complex relationships. Example: The creation of TotalSF aggregates two key areas into a single, highly predictive metric.
 
-## 2. Regularization (ElasticNet)
+### 2. Regularization (ElasticNet)
+ElasticNet combines L1 (Lasso, for feature selection) and L2 (Ridge, for coefficient stability) penalties. This approach promotes both sparsity and robustness.
 
-Balances L1 (Lasso) and L2 (Ridge) penalties:
-
+β
 min
-⁡
-∣
-∣
-𝑦
-−
-𝑋
-𝛽
-∣
-∣
+​
+ ∥y−Xβ∥ 
 2
-+
-𝜆
+ +λ 
 1
-∣
-∣
-𝛽
-∣
-∣
+​
+ ∥β∥ 
 1
-+
-𝜆
+​
+ +λ 
 2
-∣
-∣
-𝛽
-∣
-∣
+​
+ ∥β∥ 
 2
-min∣∣y−Xβ∣∣
 2
-+λ
+​
+ 
+### 3. Ensemble Learning & Blending
+Concept: Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
+
+### 4. Evaluation Metric (RMSE)
+The Root Mean Squared Error measures the average magnitude of the errors. When applied to log(SalePrice), it penalizes large percentage errors more heavily, reflecting the typical metric used in pricing models.
+
+RMSE= 
+n
 1
-	​
-
-∣∣β∣∣
-1
-	​
-
-+λ
-2
-	​
-
-∣∣β∣∣
-2
-
-## 3. Ensemble Learning
-
-Combines complementary models to reduce variance and bias.
-Blending improves robustness and generalization.
-
-## 4. Evaluation Metric (RMSE)
-
-𝑅
-𝑀
-𝑆
-𝐸
-=
-𝑚
-𝑒
-𝑎
-𝑛
-(
-(
-𝑦
-^
-−
-𝑦
-)
-2
-)
-RMSE=
-mean((
+​
+  
+i=1
+∑
+n
+​
+ ( 
 y
 ^
-	​
-
-−y)
+​
+  
+i
+​
+ −y 
+i
+​
+ ) 
 2
-)
-	​
+ 
 
+​
+ 
+### 5. Log Transformation
+Purpose: Applied to both SalePrice and various skewed predictors to better meet the assumptions of linear models (Gaussian errors) and to stabilize variance. Predictions are returned to the original scale using exp().
 
-Measures average deviation of predicted vs. actual log-prices.
+### 6. Feature Scaling
+Standardization (mean =0, standard deviation =1) ensures that no single feature dominates the model simply due to the magnitude of its values, crucial for gradient-based models like XGBoost and penalized regression like GLMNet.
 
-## 5. Log Transformation
-
-Stabilizes variance and normalizes error distribution.
-Predictions are back-transformed using exp().
-
-## 6. Feature Scaling
-
-Standardization (mean = 0, sd = 1) ensures balanced model gradients.
-
-# Workflow Overview
-
+## Workflow Overview
 Import train/test datasets
 
 Clean, impute, and preprocess data
 
 Engineer domain-relevant features
 
-Train GLMNet, Random Forest, and XGBoost using caret
+Train GLMNet, RandomForest, and XGBoost using caret
 
 Blend predictions with optimized weights
 
 Export final submission CSV
 
-# Insights
+## Insights
+Feature Quality: Rigorous feature engineering and selection (via Lasso) are the primary drivers of model performance.
 
-Feature quality drives model performance
+Ensemble Power: Regularization and blending consistently improve generalization beyond the best single learner.
 
-Regularization + blending improve generalization
+Semantic Handling: Treating missing data based on real-world meaning enhances model interpretability and accuracy.
 
-Semantic handling of NAs enhances interpretability
+## Future Work
+Implement Meta-Stacking using ElasticNet as a meta-learner over Out-Of-Fold (OOF) predictions.
 
-# Future Work
+Conduct Bayesian or Genetic hyperparameter optimization instead of grid search.
 
-Bayesian or genetic hyperparameter optimization
+Incorporate Geospatial Features for neighborhood context (e.g., distance to schools, central business district).
 
-Meta-stacking with ElasticNet meta-learner
-
-Geospatial features for neighborhood context
-
-Advanced imputation using missForest or iterative KNN
-
-# Author
-
-Simon (2025)
-Data Science enthusiast passionate about interpretable ML,
-ensemble modeling, and reproducible feature-driven pipelines.
-
-# Usage
-
-Required R Packages:
-caret, xgboost, glmnet, randomForest, doParallel, dplyr, ggplot2
-
-Run the pipeline:
-
-# Step 1: Open the script
-HousePrices_AdvancedRegression.R
-
-# Step 2: Execute the full pipeline (data import → model blending)
-
-# Step 3: Output file
-submission_blended.csv
+Employ advanced imputation techniques like missForest or iterative KNN for non-structural $\mathbf{NA}$s.
+## Author
+Simon (2025) Data Science enthusiast passionate about interpretable ML, ensemble modeling, and reproducible feature-driven pipelines.
