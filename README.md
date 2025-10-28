@@ -31,16 +31,16 @@ Ordinal Conversion: Categorical quality features (e.g., ExterQual, KitchenQual) 
 ### 3. Missing Data Imputation Strategy
 A semantic approach was adopted to handle missing values based on their meaning in the real estate domain:
 
-\textbf{Semantic Imputation}: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
+**Semantic Imputation**: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
 
-\textbf{Structural Imputation}: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
+**Structural Imputation**: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
 
-\textbf{Statistical Imputation}: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
+**Statistical Imputation**: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
 
 ### 4. Feature Transformation & Scaling
-\textbf{Skewness Correction}: Many regression models, particularly penalized linear models (like GLMNet), perform optimally when predictor residuals are normally distributed. Highly skewed features often violate this assumption.
-\textbf{Method}: The $\mathbf{\log_{1p}}$ transformation (i.e., $\mathbf{\log(1 + x)}$) was applied to numeric predictors exhibiting an absolute skewness value greater than $0.7$.
-\textbf {Justification}: The $\mathbf{0.7}$ threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
+**Skewness Correction**: Many regression models, particularly penalized linear models (like GLMNet), perform optimally when predictor residuals are normally distributed. Highly skewed features often violate this assumption.
+**Method**: The $\mathbf{\log_{1p}}$ transformation (i.e., $\mathbf{\log(1 + x)}$) was applied to numeric predictors exhibiting an absolute skewness value greater than $0.7$.
+The $\mathbf{0.7}$ threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
 
 Then Near-zero variance features were removed, and highly correlated variables (r>0.95) were pruned.
 
