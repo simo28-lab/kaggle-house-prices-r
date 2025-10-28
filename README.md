@@ -7,11 +7,11 @@ The solution leverages modern machine learning techniques, including Lasso Featu
 ### 1. Data Cleaning & Outlier Management
 This stage ensures the integrity and stability of the regression models.
 
-Outlier Removal: Extreme, high-leverage outliers (specifically GrLivArea>4600) were removed to prevent distortion of the predictive surface.
+Extreme, high-leverage outliers (specifically GrLivArea>4600) were removed to prevent distortion of the predictive surface; these outliers were highlighted by the original author of the Ames dataset, Professor Dean De Cock confirming that those points represent sales outliers, likely due to non-market circumstances (such as sales to family members or internal transfers). Consequently, they should not be used to train a model aimed at predicting market prices.
 
-Data Consolidation: Training and test sets were combined for consistent and unified preprocessing.
+Then to gain data consolidation the Training and test sets were combined for consistent and unified preprocessing.
 
-Target Normalization: The dependent variable was log-transformed (SalePrice→log(SalePrice)) to stabilize variance and normalize the error distribution.
+Finally the dependent variable was log-transformed (SalePrice→log(SalePrice)) to stabilize variance and normalize the error distribution.
 
 ### 2. Feature Engineering: Domain Expertise
 New features were created based on domain knowledge to maximize predictive power:
@@ -31,19 +31,18 @@ Ordinal Conversion: Categorical quality features (e.g., ExterQual, KitchenQual) 
 ### 3. Missing Data Imputation Strategy
 A semantic approach was adopted to handle missing values based on their meaning in the real estate domain:
 
-Semantic Imputation: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
+\textbf{Semantic Imputation}: $\mathbf{NA}$s were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
 
-Structural Imputation: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
+\textbf{Structural Imputation}: $\mathbf{NA}$s in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
 
-Statistical Imputation: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
+\textbf{Statistical Imputation}: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
 
 ### 4. Feature Transformation & Scaling
-Skewness Correction: log 
-1p
-​
-  transformation was applied to highly skewed numeric predictors (skewness>0.7).
+\textbf{Skewness Correction}: Many regression models, particularly penalized linear models (like GLMNet), perform optimally when predictor residuals are normally distributed. Highly skewed features often violate this assumption.
+\textbf{Method}: The $\mathbf{\log_{1p}}$ transformation (i.e., $\mathbf{\log(1 + x)}$) was applied to numeric predictors exhibiting an absolute skewness value greater than $0.7$.
+\textbf {Justification}: The $\mathbf{0.7}$ threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
 
-Feature Filtering: Near-zero variance features were removed, and highly correlated variables (r>0.95) were pruned.
+Then Near-zero variance features were removed, and highly correlated variables (r>0.95) were pruned.
 
 Encoding: Categorical variables were processed using One-Hot Encoding.
 
