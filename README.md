@@ -59,7 +59,7 @@ Three high-performance models were trained using 10-fold cross-validation for re
 **Weighted Blending:**
 The final prediction is an Ensemble Weighted Blend designed to capitalize on the strengths of each model:
 
-**$LogFinalPred=0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet$**
+**$LogFinalPred=0.40⋅XGBoost+0.25⋅RandomForest+0.35⋅GLMNet$**
 The final SalePrice is obtained by back-transforming: **$SalePrice=exp(LogFinalPred)$**.
 
 ### 6. Performance Metrics
@@ -68,22 +68,26 @@ The blend successfully improves generalization, achieving a lower RMSE than any 
 ### 7. Output
 The final submission file: submission_blended.csv, containing columns Id and SalePrice.
 
+Both XGBoost and GLMNet likely experienced overfitting. They performed exceptionally well on the training data's CV folds, capturing subtle noise and patterns specific to that dataset, which leads to an artificially low **$\text{RMSE}_{\text{CV}}$.**
+**The Solution:** The final blend result of **$\mathbf{0.12120}$** lies very close to the internal **$\text{RMSE}$** of the Ranger model (**$0.12522$**). This shows that the blend was successfully dragged toward the most robust and honest predictor in the ensemble, which was the Random Forest.
+So the blend effectively mitigated the high variance (overfitting) of the XGBoost and GLMNet models by incorporating the high stability (low variance) of the Ranger model. 
+
 ## Theoretical Appendix: Key Concepts
 ### 1. Feature Engineering
-*$Concept$*: The process of using domain knowledge to create predictive features from raw data, enhancing the model's understanding of complex relationships. 
+The process of using domain knowledge to create predictive features from raw data, enhancing the model's understanding of complex relationships. 
 Example: The creation of TotalSF aggregates two key areas into a single, highly predictive metric.
 
 ### 2. Regularization (ElasticNet)
 ElasticNet combines L1 (Lasso, for feature selection) and L2 (Ridge, for coefficient stability) penalties. This approach promotes both sparsity and robustness.
  
 ### 3. Ensemble Learning & Blending
-*Concept:* Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
+Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
 
 ### 4. Evaluation Metric (RMSE)
 The Root Mean Squared Error measures the average magnitude of the errors. When applied to log(SalePrice), it penalizes large percentage errors more heavily, reflecting the typical metric used in pricing models.
 
 ### 5. Log Transformation
-*Purpose:* Applied to both SalePrice and various skewed predictors to better meet the assumptions of linear models (Gaussian errors) and to stabilize variance. Predictions are returned to the original scale using exp().
+Applied to both SalePrice and various skewed predictors to better meet the assumptions of linear models (Gaussian errors) and to stabilize variance. Predictions are returned to the original scale using exp().
 
 ### 6. Feature Scaling
 Standardization (mean =0, standard deviation =1) ensures that no single feature dominates the model simply due to the magnitude of its values, crucial for gradient-based models like XGBoost and penalized regression like GLMNet.
