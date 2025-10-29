@@ -39,8 +39,8 @@ A semantic approach was adopted to handle missing values based on their meaning 
 
 ### 4. Feature Transformation & Scaling
 **Skewness Correction**: Many regression models, particularly penalized linear models (like GLMNet), perform optimally when predictor residuals are normally distributed. Highly skewed features often violate this assumption.
-**Method**: The **$\mathbf{\log_{1p}}$** transformation (i.e., **$\mathbf{\log(1 + x)}$**) was applied to numeric predictors exhibiting an absolute skewness value greater than **$0.7$.**
-The **$\mathbf{0.7}$** threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
+
+**Method**: The **$\mathbf{\log_{1p}}$** transformation (i.e., **$\mathbf{\log(1 + x)}$**) was applied to numeric predictors exhibiting an absolute skewness value greater than **$0.7$.** The **$\mathbf{0.7}$** threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
 
 Then Near-zero variance features were removed, this improves computational efficiency by reducing the feature space and prevents computational instability (e.g., division by zero during scaling, or matrix singularity) which can be an issue for regression methods like GLMNet, and also highly correlated variables (r>0.95) were pruned to stabilize the coefficients that can become unstable due to multicollinearity.
 
@@ -59,14 +59,8 @@ Three high-performance models were trained using 10-fold cross-validation for re
 **Weighted Blending:**
 The final prediction is an Ensemble Weighted Blend designed to capitalize on the strengths of each model:
 
-FinalPred 
-log
-​
- =0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet
-The final SalePrice is obtained by back-transforming: SalePrice=exp(FinalPred 
-log
-​
- ).
+**$Log_FinalPred=0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet$**
+The final SalePrice is obtained by back-transforming: **$SalePrice=exp(Log_FinalPred)$**.
 
 ### 6. Performance Metrics
 The blend successfully improves generalization, achieving a lower RMSE than any single base learner.
@@ -83,28 +77,13 @@ The final submission file: submission_blended.csv, containing columns Id and Sal
 
 ## Theoretical Appendix: Key Concepts
 ### 1. Feature Engineering
-Concept: The process of using domain knowledge to create predictive features from raw data, enhancing the model's understanding of complex relationships. Example: The creation of TotalSF aggregates two key areas into a single, highly predictive metric.
+*$Concept$*: The process of using domain knowledge to create predictive features from raw data, enhancing the model's understanding of complex relationships. 
+Example: The creation of TotalSF aggregates two key areas into a single, highly predictive metric.
 
 ### 2. Regularization (ElasticNet)
 ElasticNet combines L1 (Lasso, for feature selection) and L2 (Ridge, for coefficient stability) penalties. This approach promotes both sparsity and robustness.
 
-β
-min
-​
- ∥y−Xβ∥ 
-2
- +λ 
-1
-​
- ∥β∥ 
-1
-​
- +λ 
-2
-​
- ∥β∥ 
-2
-2
+*$β=min(∥y−Xβ∥^2)+λ_1*∥β_1∥+λ_2*∥β_2∥^2$*
 ​
  
 ### 3. Ensemble Learning & Blending
