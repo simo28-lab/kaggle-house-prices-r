@@ -9,7 +9,7 @@ This stage ensures the integrity and stability of the regression models.
 
 Extreme, high-leverage outliers (specifically GrLivArea>4600) were removed to prevent distortion of the predictive surface; these outliers were highlighted by the original author of the Ames dataset, Professor Dean De Cock confirming that those points represent sales outliers, likely due to non-market circumstances (such as sales to family members or internal transfers). Consequently, they should not be used to train a model aimed at predicting market prices.
 
-Then to gain data consolidation the Training and test sets were combined for consistent and unified preprocessing.
+Then to gain data consolidation the training and test sets were combined for consistent and unified preprocessing.
 
 Finally the dependent variable was log-transformed (SalePrice→log(SalePrice)) to stabilize variance and normalize the error distribution.
 
@@ -33,31 +33,30 @@ A semantic approach was adopted to handle missing values based on their meaning 
 
 **Semantic Imputation**: **$\mathbf{NA}$** were replaced with "None" (for categorical features like Alley or PoolQC) indicating absence of the item.
 
-**Structural Imputation**: **$\mathbf{NA}$** in numeric area fields (e.g., $\mathbf{BsmtFinSF1}$) were set to **$\mathbf{0}$**.
+**Structural Imputation**: **$\mathbf{NA}$** in numeric area fields (e.g., **$\mathbf{BsmtFinSF1}$**) were set to **$\mathbf{0}$**.
 
 **Statistical Imputation**: Median/mode imputation was used for the small number of remaining missing values (LotFrontage, etc.).
 
 ### 4. Feature Transformation & Scaling
 **Skewness Correction**: Many regression models, particularly penalized linear models (like GLMNet), perform optimally when predictor residuals are normally distributed. Highly skewed features often violate this assumption.
-**Method**: The $\mathbf{\log_{1p}}$ transformation (i.e., $\mathbf{\log(1 + x)}$) was applied to numeric predictors exhibiting an absolute skewness value greater than $0.7$.
-The $\mathbf{0.7}$ threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
+**Method**: The **$\mathbf{\log_{1p}}$** transformation (i.e., **$\mathbf{\log(1 + x)}$**) was applied to numeric predictors exhibiting an absolute skewness value greater than **$0.7$.**
+The **$\mathbf{0.7}$** threshold is an empirically common rule-of-thumb suggesting that distributions with skewness beyond this magnitude warrant corrective action to mitigate heteroscedasticity and improve model fit.
 
-Then Near-zero variance features were removed, and highly correlated variables (r>0.95) were pruned.
+Then Near-zero variance features were removed, this improves computational efficiency by reducing the feature space and prevents computational instability (e.g., division by zero during scaling, or matrix singularity) which can be an issue for regression methods like GLMNet, and also highly correlated variables (r>0.95) were pruned to stabilize the coefficients that can become unstable due to multicollinearity.
 
-Encoding: Categorical variables were processed using One-Hot Encoding.
-
-Scaling: All final numeric predictors were centered and scaled (mean =0, sd =1) to ensure balanced model gradients.
+Categorical variables were processed using One-Hot Encoding to interpret categorical information numerically without implying any ordinal relationship between categories. 
+All final numeric predictors were centered and scaled (mean =0, sd =1) to ensure balanced model gradients.
 
 ### 5. Modeling and Ensemble Strategy
 Three high-performance models were trained using 10-fold cross-validation for reliable performance estimation:
 
-XGBoost: Excellent for non-linear feature interactions.
+**XGBoost**: Excellent for non-linear feature interactions.
 
-Random Forest (Ranger): Provides stability and low variance.
+**Random Forest (Ranger)**: Provides stability and low variance.
 
-GLMNet (ElasticNet): Combines interpretability with effective regularization.
+**GLMNet (ElasticNet)**: Combines interpretability with effective regularization.
 
-Weighted Blending:
+**Weighted Blending:**
 The final prediction is an Ensemble Weighted Blend designed to capitalize on the strengths of each model:
 
 FinalPred 
