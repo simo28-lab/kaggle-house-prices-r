@@ -13,18 +13,18 @@ Then to gain data consolidation the training and test sets were combined for con
 
 Finally the dependent variable was log-transformed (SalePrice→log(SalePrice)) to stabilize variance and normalize the error distribution.
 
-### 2. Feature Engineering: Domain Expertise
+### 2. Feature Engineering
 New features were created based on domain knowledge to maximize predictive power:
 
-TotalSF=GrLivArea+TotalBsmtSF (Total livable square footage)
+*TotalSF=GrLivArea+TotalBsmtSF* (Total livable square footage)
 
-HouseAge=YrSold−YearBuilt
+*HouseAge=YrSold−YearBuilt*
 
-YearsSinceRemodel=YrSold−YearRemodAdd
+*YearsSinceRemodel=YrSold−YearRemodAdd*
 
-OverallScore=OverallQual×OverallCond
+*OverallScore=OverallQual×OverallCond*
 
-TotalBath=BsmtFullBath+(BsmtHalfBath×0.5)+FullBath+(HalfBath×0.5)
+*TotalBath=BsmtFullBath+(BsmtHalfBath×0.5)+FullBath+(HalfBath×0.5)*
 
 Ordinal Conversion: Categorical quality features (e.g., ExterQual, KitchenQual) were converted to an interpretable numeric scale (0 to 5).
 
@@ -69,6 +69,7 @@ The blend successfully improves generalization, achieving a lower RMSE than any 
 The final submission file: submission_blended.csv, containing columns Id and SalePrice.
 
 Both XGBoost and GLMNet likely experienced overfitting. They performed exceptionally well on the training data's CV folds, capturing subtle noise and patterns specific to that dataset, which leads to an artificially low **$\text{RMSE}_{\text{CV}}$.**
+
 **The Solution:** The final blend result of **$\mathbf{0.12120}$** lies very close to the internal **$\text{RMSE}$** of the Ranger model (**$0.12522$**). This shows that the blend was successfully dragged toward the most robust and honest predictor in the ensemble, which was the Random Forest.
 So the blend effectively mitigated the high variance (overfitting) of the XGBoost and GLMNet models by incorporating the high stability (low variance) of the Ranger model. 
 
