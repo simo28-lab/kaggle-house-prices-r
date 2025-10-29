@@ -59,8 +59,8 @@ Three high-performance models were trained using 10-fold cross-validation for re
 **Weighted Blending:**
 The final prediction is an Ensemble Weighted Blend designed to capitalize on the strengths of each model:
 
-**$Log_FinalPred=0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet$**
-The final SalePrice is obtained by back-transforming: **$SalePrice=exp(Log_FinalPred)$**.
+**$LogFinalPred=0.50⋅XGBoost+0.30⋅RandomForest+0.20⋅GLMNet$**
+The final SalePrice is obtained by back-transforming: **$SalePrice=exp(LogFinalPred)$**.
 
 ### 6. Performance Metrics
 The blend successfully improves generalization, achieving a lower RMSE than any single base learner.
