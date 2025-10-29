@@ -75,43 +75,15 @@ Example: The creation of TotalSF aggregates two key areas into a single, highly 
 
 ### 2. Regularization (ElasticNet)
 ElasticNet combines L1 (Lasso, for feature selection) and L2 (Ridge, for coefficient stability) penalties. This approach promotes both sparsity and robustness.
-
-**$β=min(∥y−Xβ∥^2)+λ_1*∥β_1∥+λ_2*∥β_2∥^2$**
-​
  
 ### 3. Ensemble Learning & Blending
-*Concept*: Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
+*Concept:* Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
 
 ### 4. Evaluation Metric (RMSE)
 The Root Mean Squared Error measures the average magnitude of the errors. When applied to log(SalePrice), it penalizes large percentage errors more heavily, reflecting the typical metric used in pricing models.
 
-RMSE= 
-n
-1
-​
-  
-i=1
-∑
-n
-​
- ( 
-y
-^
-​
-  
-i
-​
- −y 
-i
-​
- ) 
-2
- 
-
-​
- 
 ### 5. Log Transformation
-Purpose: Applied to both SalePrice and various skewed predictors to better meet the assumptions of linear models (Gaussian errors) and to stabilize variance. Predictions are returned to the original scale using exp().
+*Purpose:* Applied to both SalePrice and various skewed predictors to better meet the assumptions of linear models (Gaussian errors) and to stabilize variance. Predictions are returned to the original scale using exp().
 
 ### 6. Feature Scaling
 Standardization (mean =0, standard deviation =1) ensures that no single feature dominates the model simply due to the magnitude of its values, crucial for gradient-based models like XGBoost and penalized regression like GLMNet.
@@ -130,11 +102,11 @@ Blend predictions with optimized weights
 Export final submission CSV
 
 ## Insights
-Feature Quality: Rigorous feature engineering and selection (via Lasso) are the primary drivers of model performance.
+**Feature Quality:** Rigorous feature engineering and selection (via Lasso) are the primary drivers of model performance.
 
-Ensemble Power: Regularization and blending consistently improve generalization beyond the best single learner.
+**Ensemble Power:** Regularization and blending consistently improve generalization beyond the best single learner.
 
-Semantic Handling: Treating missing data based on real-world meaning enhances model interpretability and accuracy.
+**Semantic Handling:** Treating missing data based on real-world meaning enhances model interpretability and accuracy.
 
 ## Future Work
 Implement Meta-Stacking using ElasticNet as a meta-learner over Out-Of-Fold (OOF) predictions.
@@ -143,6 +115,7 @@ Conduct Bayesian or Genetic hyperparameter optimization instead of grid search.
 
 Incorporate Geospatial Features for neighborhood context (e.g., distance to schools, central business district).
 
-Employ advanced imputation techniques like missForest or iterative KNN for non-structural $\mathbf{NA}$s.
+Employ advanced imputation techniques like missForest or iterative KNN for non-structural **$\mathbf{NA}$**.
+
 ## Author
-Simon (2025) Data Science enthusiast passionate about interpretable ML, ensemble modeling, and reproducible feature-driven pipelines.
+Simona (2025) Data Science enthusiast passionate about interpretable ML, ensemble modeling, and reproducible feature-driven pipelines.
