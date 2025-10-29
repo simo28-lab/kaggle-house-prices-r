@@ -65,13 +65,6 @@ The final SalePrice is obtained by back-transforming: **$SalePrice=exp(Log_Final
 ### 6. Performance Metrics
 The blend successfully improves generalization, achieving a lower RMSE than any single base learner.
 
-Model	Cross-Validation RMSE (log(SalePrice))
-Blend (Ensemble)	0.1267
-XGBoost	∼0.127
-GLMNet	∼0.130
-Random Forest	∼0.134
-
-
 ### 7. Output
 The final submission file: submission_blended.csv, containing columns Id and SalePrice.
 
@@ -83,11 +76,11 @@ Example: The creation of TotalSF aggregates two key areas into a single, highly 
 ### 2. Regularization (ElasticNet)
 ElasticNet combines L1 (Lasso, for feature selection) and L2 (Ridge, for coefficient stability) penalties. This approach promotes both sparsity and robustness.
 
-*$β=min(∥y−Xβ∥^2)+λ_1*∥β_1∥+λ_2*∥β_2∥^2$*
+**$β=min(∥y−Xβ∥^2)+λ_1*∥β_1∥+λ_2*∥β_2∥^2$**
 ​
  
 ### 3. Ensemble Learning & Blending
-Concept: Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
+*Concept*: Combining multiple distinct models (heterogeneous) to leverage their complementary strengths. Blending is a simple, effective form of ensemble learning that significantly improves robustness and generalization compared to single models.
 
 ### 4. Evaluation Metric (RMSE)
 The Root Mean Squared Error measures the average magnitude of the errors. When applied to log(SalePrice), it penalizes large percentage errors more heavily, reflecting the typical metric used in pricing models.
