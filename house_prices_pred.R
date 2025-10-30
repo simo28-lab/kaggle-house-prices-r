@@ -371,8 +371,8 @@ pred_xgb_log <- predict(xgb_model, test_matrix_sel)
 # Weigthed blending (XGBoost 50%, Ranger 30%, GLMNet 20%)
 pred_weighted_log <- (
   0.40 * pred_xgb_log + 
-    0.35 * pred_rf_log + 
-    0.25 * pred_glm_log
+    0.25 * pred_rf_log + 
+    0.35 * pred_glm_log
 )
 
 # original scale of prices
@@ -382,8 +382,9 @@ pred_final <- exp(pred_weighted_log)
 submission_blended <- data.frame(Id = test_ID, SalePrice = pred_final)
 write.csv(submission_blended, "submission_blended.csv", row.names = FALSE)
 
-cat("\n File 'submission_blended.csv' created using weighted blending (40/35/25).\n")
+cat("\n File 'submission_blended.csv' created using weighted blending (40/25/35).\n")
 
 
 head(submission_blended)
+
 
