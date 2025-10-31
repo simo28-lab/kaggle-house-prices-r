@@ -107,6 +107,26 @@ Blend predictions with optimized weights
 
 Export final submission CSV
 
+
+📦 HousePrices_AdvancedRegression/
+│
+├── 📁 data/                     # Raw and processed datasets
+│   ├── train.csv                # Training dataset
+│   ├── test.csv                 # Test dataset
+│   └── data_description.txt     # Variable definitions (from Kaggle)
+│
+├── 📁 outputs/                  # Model outputs and submission files
+│   ├── submission_blended.csv   # Final Kaggle submission   
+|
+├── 📄 house_prices_pred.R  # Main R pipeline
+├── 📄 README.md                 # Project documentation
+└── 📄 requirements.txt          # Optional: list of dependencies
+
+
+
+
+
+
 ## Insights
 **Feature Quality:** Rigorous feature engineering and selection (via Lasso) are the primary drivers of model performance.
 
@@ -125,3 +145,7 @@ Employ advanced imputation techniques like missForest or iterative KNN for non-s
 
 ## Author
 Simona (2025) Data Science enthusiast passionate about interpretable ML, ensemble modeling, and reproducible feature-driven pipelines.
+
+
+
+
