@@ -112,13 +112,11 @@ Export final submission CSV
 📦 HousePrices_AdvancedRegression/
 │
 ├── 📁 data/                     
-│   ├── train.csv               
-│   ├── test.csv                 
-│   └── data_description.txt     
-│
+│──├── train.csv               
+│──├── test.csv                 
+│──└── data_description.txt     
 ├── 📁 outputs/                 
-│   ├── submission_blended.csv   
-|
+│──└──submission_blended.csv   
 ├── 📄 house_prices_pred.R  
 ├── 📄 README.md                 
 └── 📄 requirements.txt         
