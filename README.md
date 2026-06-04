@@ -141,6 +141,36 @@ Incorporate Geospatial Features for neighborhood context (e.g., distance to scho
 
 Employ advanced imputation techniques like missForest or iterative KNN for non-structural **$\mathbf{NA}$**.
 
+
+
+
+## 🚀 Reproducibility
+
+
+### 1. Installation dependencies (just once)
+
+
+```bash
+sudo apt update && sudo apt install -y r-base r-base-dev libssl-dev libxml2-dev libcurl4-openssl-dev
+
+cat << EOF > requirements.txt
+glmnet
+randomForest
+gbm
+corrplot
+DataExplorer
+xgboost
+tidyverse
+caret
+here
+EOF
+
+Rscript -e "install.packages(readLines('requirements.txt'), repos='[https://cloud.r-project.org](https://cloud.r-project.org)')"
+
+Rscript nome_del_progetto.R
+
+```
+
 ## Author
 Simona (2025) Data Science enthusiast passionate about interpretable ML, ensemble modeling, and reproducible feature-driven pipelines.
 
