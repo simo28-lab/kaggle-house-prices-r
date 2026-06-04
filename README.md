@@ -107,23 +107,23 @@ Blend predictions with optimized weights
 
 Export final submission CSV
 
+---
 
 📦 HousePrices_AdvancedRegression/
 │
-├── 📁 data/                     # Raw and processed datasets
-│   ├── train.csv                # Training dataset
-│   ├── test.csv                 # Test dataset
-│   └── data_description.txt     # Variable definitions (from Kaggle)
+├── 📁 data/                     
+│   ├── train.csv               
+│   ├── test.csv                 
+│   └── data_description.txt     
 │
-├── 📁 outputs/                  # Model outputs and submission files
-│   ├── submission_blended.csv   # Final Kaggle submission   
+├── 📁 outputs/                 
+│   ├── submission_blended.csv   
 |
-├── 📄 house_prices_pred.R  # Main R pipeline
-├── 📄 README.md                 # Project documentation
-└── 📄 requirements.txt          # Optional: list of dependencies
+├── 📄 house_prices_pred.R  
+├── 📄 README.md                 
+└── 📄 requirements.txt         
 
-
-
+---
 
 
 
