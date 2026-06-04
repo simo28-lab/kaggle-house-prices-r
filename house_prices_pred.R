@@ -16,12 +16,14 @@ library(corrplot)
 library(DataExplorer)
 library(xgboost)
 library(dplyr)
+library(here)
+
 set.seed(2025)
 
 # --- Data Loading -----------------------------------------------------------
 
-train <- read.csv("C:/Users/simon/OneDrive/Documenti/kaggle project/train.csv")
-test  <- read.csv("C:/Users/simon/OneDrive/Documenti/kaggle project/test.csv")
+train <- read.csv(here("train.csv"))
+test  <- read.csv(here("test.csv"))
 length(train)
 length(test)
 head(train)
